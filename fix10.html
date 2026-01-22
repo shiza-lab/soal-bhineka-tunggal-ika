@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Game Pilihan Ganda</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: white;
+  text-align: center;
+}
+
+.container {
+  width: 80%;
+  margin: 50px auto;
+  background: #1e293b;
+  padding: 30px;
+  border-radius: 15px;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  margin: 10px 0;
+  font-size: 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #38bdf8;
+}
+
+#next {
+  display: none;
+  background: #22c55e;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2 id="question">Soal</h2>
+
+  <button onclick="checkAnswer(0)" id="opt0"></button>
+  <button onclick="checkAnswer(1)" id="opt1"></button>
+  <button onclick="checkAnswer(2)" id="opt2"></button>
+  <button onclick="checkAnswer(3)" id="opt3"></button>
+
+  <h3 id="result"></h3>
+  <button id="next" onclick="nextQuestion()">Soal Berikutnya</button>
+
+  <h3>Skor: <span id="score">0</span></h3>
+</div>
+
+<script>
+let questions = [
+  {
+    question: "Arti dari semboyan Bhinneka Tunggal Ika adalah …",
+    options: [
+      "Berbeda-beda tetapi tetap satu jua",
+      "Bersatu kita teguh",
+      "Satu bangsa satu bahasa",
+      "Persatuan dan kesatuan"
+    ],
+    answer: 0
+  },
+  {
+    question: "Semboyan Bhinneka Tunggal Ika berasal dari kitab …",
+    options: ["Negarakertagama","Sutasoma","Arjunawiwaha","Bharatayudha"],
+    answer: 1
+  },
+  {
+    question: "Pengarang kitab Sutasoma adalah …",
+    options: ["Mpu Gandring","Mpu Prapanca","Mpu Tantular","Mpu Kanwa"],
+    answer: 2
+  },
+  {
+    question: "Bhinneka Tunggal Ika mencerminkan persatuan dalam keberagaman …",
+    options: ["Budaya dan suku bangsa","Kekayaan alam","Sistem pemerintahan","Letak geografis"],
+    answer: 0
+  },
+  {
+    question: "Contoh sikap yang sesuai dengan Bhinneka Tunggal Ika adalah …",
+    options: [
+      "Memilih teman yang sama sukunya",
+      "Menghargai perbedaan agama",
+      "Merendahkan budaya daerah lain",
+      "Memaksakan pendapat sendiri"
+    ],
+    answer: 1
+  },
+  {
+    question: "Perbedaan suku di Indonesia harus disikapi dengan …",
+    options: ["Permusuhan","Acuh tak acuh","Toleransi","Persaingan"],
+    answer: 2
+  },
+  {
+    question: "Keberagaman di Indonesia merupakan …",
+    options: ["Hambatan persatuan","Ancaman bangsa","Kekayaan bangsa","Penyebab konflik"],
+    answer: 2
+  },
+  {
+    question: "Sikap toleransi antarumat beragama bertujuan untuk …",
+    options: [
+      "Menonjolkan perbedaan",
+      "Menjaga persatuan",
+      "Memperbesar konflik",
+      "Menghilangkan agama"
+    ],
+    answer: 1
+  },
+  {
+    question: "Contoh keberagaman budaya adalah …",
+    options: [
+      "Perbedaan warna kulit",
+      "Perbedaan rumah adat",
+      "Perbedaan tinggi badan",
+      "Perbedaan usia"
+    ],
+    answer: 1
+  },
+  {
+    question: "Manfaat menerapkan Bhinneka Tunggal Ika adalah …",
+    options: [
+      "Terjadinya perpecahan",
+      "Hidup menjadi tidak aman",
+      "Persatuan bangsa terjaga",
+      "Timbulnya konflik sosial"
+    ],
+    answer: 2
+  },
+  {
+    question: "Menghina budaya daerah lain termasuk perbuatan …",
+    options: ["Terpuji","Toleran","Tidak sesuai Bhinneka Tunggal Ika","Patut dicontoh"],
+    answer: 2
+  },
+  {
+    question: "Contoh sikap persatuan di sekolah adalah …",
+    options: [
+      "Berkelompok sesuai suku",
+      "Bekerja sama saat piket kelas",
+      "Mengejek teman",
+      "Membeda-bedakan teman"
+    ],
+    answer: 1
+  },
+  {
+    question: "Indonesia memiliki banyak bahasa daerah, namun bahasa persatuannya adalah …",
+    options: ["Bahasa daerah","Bahasa Melayu","Bahasa Indonesia","Bahasa Inggris"],
+    answer: 2
+  },
+  {
+    question: "Bhinneka Tunggal Ika dijadikan semboyan negara karena …",
+    options: [
+      "Indonesia negara kecil",
+      "Indonesia terdiri dari satu suku",
+      "Indonesia sangat beragam",
+      "Indonesia negara tertua"
+    ],
+    answer: 2
+  },
+  {
+    question: "Perbedaan agama tidak boleh dijadikan alasan untuk …",
+    options: ["Saling menghormati","Hidup rukun","Bermusuhan","Bekerja sama"],
+    answer: 2
+  },
+  {
+    question: "Menghormati teman yang sedang beribadah merupakan contoh …",
+    options: ["Intoleransi","Diskriminasi","Toleransi","Fanatisme"],
+    answer: 2
+  },
+  {
+    question: "Sikap yang mencerminkan Bhinneka Tunggal Ika adalah …",
+    options: [
+      "Menolak pendapat orang lain",
+      "Menghargai perbedaan pendapat",
+      "Memaksakan kehendak",
+      "Mengutamakan kepentingan pribadi"
+    ],
+    answer: 1
+  },
+  {
+    question: "Keberagaman suku bangsa di Indonesia disebabkan oleh …",
+    options: [
+      "Perbedaan iklim",
+      "Perbedaan letak geografis",
+      "Perbedaan ekonomi",
+      "Perbedaan pendidikan"
+    ],
+    answer: 1
+  },
+  {
+    question: "Konflik akibat perbedaan dapat dihindari dengan cara …",
+    options: [
+      "Menghindari semua orang",
+      "Menjunjung toleransi",
+      "Memaksakan kehendak",
+      "Menyalahkan pihak lain"
+    ],
+    answer: 1
+  },
+  {
+    question: "Hidup rukun dalam perbedaan akan menciptakan …",
+    options: ["Perpecahan","Ketegangan","Kedamaian","Permusuhan"],
+    answer: 2
+  },
+  {
+    question: "Bhinneka Tunggal Ika menekankan pentingnya …",
+    options: ["Keseragaman","Persatuan","Perbedaan","Persaingan"],
+    answer: 1
+  },
+  {
+    question: "Contoh keberagaman agama di Indonesia adalah …",
+    options: [
+      "Islam, Kristen, Hindu",
+      "Jawa, Sunda, Batak",
+      "Merah, putih, hitam",
+      "Pagi, siang, malam"
+    ],
+    answer: 0
+  },
+  {
+    question: "Jika teman berbeda pendapat, sikap yang tepat adalah …",
+    options: ["Marah","Mengejek","Menghargai","Menjauhi"],
+    answer: 2
+  },
+  {
+    question: "Perilaku yang dapat merusak persatuan adalah …",
+    options: ["Gotong royong","Musyawarah","Diskriminasi","Toleransi"],
+    answer: 2
+  },
+  {
+    question: "Penerapan Bhinneka Tunggal Ika di lingkungan masyarakat dapat dilakukan dengan …",
+    options: [
+      "Mengutamakan kelompok sendiri",
+      "Menjaga kerukunan antarwarga",
+      "Menolak perbedaan",
+      "Menghindari tetangga"
+    ],
+    answer: 1
+  }
+];
+
+let index = 0;
+let score = 0;
+
+function loadQuestion() {
+  document.getElementById("result").innerHTML = "";
+  document.getElementById("next").style.display = "none";
+
+  document.getElementById("question").innerHTML = questions[index].question;
+
+  for (let i = 0; i < 4; i++) {
+    document.getElementById("opt" + i).innerHTML =
+      questions[index].options[i];
+  }
+}
+
+function checkAnswer(selected) {
+  if (selected === questions[index].answer) {
+    document.getElementById("result").innerHTML = "✅ Jawaban Benar!";
+    score += 10;
+  } else {
+    document.getElementById("result").innerHTML = "❌ Jawaban Salah!";
+  }
+  document.getElementById("score").innerHTML = score;
+  document.getElementById("next").style.display = "block";
+}
+
+function nextQuestion() {
+  index++;
+  if (index < questions.length) {
+    loadQuestion();
+  } else {
+    document.getElementById("question").innerHTML = "🎉 Game Selesai!";
+    document.getElementById("result").innerHTML =
+      "Skor Akhir: " + score;
+    document.getElementById("next").style.display = "none";
+  }
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
